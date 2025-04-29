@@ -1,7 +1,7 @@
 from tkinter import Tk, BOTH, Canvas
 
 class Window():
-    def __init__(self, width, height):
+    def __init__(self, width:int, height:int):
         self.__width = width
         self.__height = height
         
