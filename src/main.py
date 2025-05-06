@@ -1,36 +1,27 @@
-import random
-
-from cell import Cell
-from line import Line
-from point import Point
+from maze import Maze
 from window import Window
+import sys
+
 
 def main():
-    win = Window(800, 600)
+    num_rows = 12
+    num_cols = 16
+    margin = 50
+    screen_x = 800
+    screen_y = 600
+    cell_size_x = (screen_x - 2 * margin) / num_cols
+    cell_size_y = (screen_y - 2 * margin) / num_rows
 
-    cells = seed_random_cells(10, win)
-    for cell in cells:
-        cell.draw()
+    sys.setrecursionlimit(10000)
+    win = Window(screen_x, screen_y)
 
-    for i in range(1, len(cells)):
-        if random.choice([True, False]):
-            cells[i-1].draw_move(cells[i])
-
+    maze = Maze(margin, margin, num_rows, num_cols, cell_size_x, cell_size_y, win, 10)
+    print("maze created")
+    is_solvable = maze.solve()
+    if not is_solvable:
+        print("maze can not be solved!")
+    else:
+        print("maze solved!")
     win.wait_for_close()
-
-def seed_random_cells(num_of_cells:int, win:Window) -> list[Cell]:
-    cells = []
-    for i in range(num_of_cells):
-        p1 = Point(i * 30 + 10, 10)
-        p2 = Point(i * 30 + 30, 30)
-        has_left_wall = random.choice([True, False])
-        has_top_wall = random.choice([True, False])
-        has_right_wall = random.choice([True, False])
-        has_bottom_wall = random.choice([True, False])
-        new_line = Cell(win, p1, p2, has_left_wall, has_top_wall, has_right_wall, has_bottom_wall)
-        cells.append(new_line)
-
-    return cells
-
-
+    
 main()
